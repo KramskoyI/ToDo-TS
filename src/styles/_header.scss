@@ -1,0 +1,12 @@
+@import './variables';
+
+.header {
+    background-color: $mainColorLight;
+    height: $headerHeight;
+    
+    .app-title {
+        margin: 0;
+        text-align: center;
+        line-height: $headerHeight;
+    }
+}

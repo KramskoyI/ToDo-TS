@@ -1,0 +1,131 @@
+@import './variables';
+@import './checkbox';
+
+.main {
+    margin: 32px auto; 
+    
+    .input {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 40px;
+
+        input {
+            width: 80%;
+            font-size: 25px;
+            padding: 5px 15px;
+            border: none;
+            outline: none;
+            box-shadow: $shadow;
+            border-radius: $mainRadius;
+        }
+        
+        .add-btn {
+            width: 15%;
+            font-size: 25px;
+        }
+    }
+
+    .todos {
+        &-list {
+
+            &-item {
+                display: flex;
+                // justify-content: space-between;
+                // align-items: center;
+                box-shadow: $shadow;
+                border-radius: $mainRadius;
+                overflow: hidden;
+                margin-bottom: 20px;
+
+                
+                label {
+                    @include checkbox(45px, $mainColorLight);
+
+                    .content {
+                        margin-left: 20px;
+                    }
+                }
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            
+                .buttons {
+                    display: flex;
+
+                    button{
+                        height: 100%;
+                        box-shadow: none;
+                        border-radius: 0;
+                        transform: scale(1);
+                        width: 45px;
+                        font-size: 24px;
+                        user-select: none;
+                        transition: background-color .2s linear;
+                    }
+
+                    .edit {
+                        background-color: $mainColorLight;
+
+                        &:hover {
+                            background-color: $mainColorSolid;
+                        }
+                    }
+                    .delete {
+                        background-color: $warnColorLight;
+
+                        &:hover {
+                            background-color: $warnColorSolid;
+                        }
+                    }
+                }
+            }
+
+        }
+        
+    }
+
+    .controls {
+        display: grid;
+        grid-template-columns: auto 250px 145px;
+        grid-column-gap: 25px;
+        margin: 30px auto 0;
+        padding: 0 15px;
+
+        .counter {
+            text-decoration: underline;
+            text-decoration-color: $mainColorLight;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: space-evenly;
+            box-shadow: $shadow;
+            border-radius: $mainRadius;
+            overflow: hidden;
+
+            button {
+                width: 100%;
+                border-radius: 0;
+                padding: 0 15px;
+                box-shadow: none;
+                height: 25px;
+                border-right: 1px solid $mainColorLight;
+
+                &:last-child {
+                    border-right: 0;
+                }
+
+                &:active {
+                    transform: scale(1);
+                }
+
+                &.active {
+                    background-color: $mainColorLight;
+                }
+            }
+        }
+    }
+}
+
+
