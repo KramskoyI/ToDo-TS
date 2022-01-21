@@ -8,7 +8,8 @@ export default class TodoListController {
     _todoListView.init({
       onInput: this.actionInput.bind(this),
       onSubmit: this.actionAdd.bind(this),
-      onChange: this.actionChange.bind(this)
+      onChange: this.actionChange.bind(this),
+      onToggle: this.actionToggle.bind(this),
     });
   }
 
@@ -22,7 +23,6 @@ export default class TodoListController {
 
   actionAdd(): void {
     const text = this._todoListModel.currentInputValue.trim();
-
     if (text) {
       this._todoListModel.create(text);
       this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
@@ -32,7 +32,7 @@ export default class TodoListController {
   actionChange(id: number, text: string): void {
     this._todoListModel.taskList = this._todoListModel.taskList.map((todo) => {
       if (todo.id === id) {
-        return {
+        return  {
           ...todo,
           text
         };
@@ -40,15 +40,20 @@ export default class TodoListController {
         return todo;
       }
     });
-
+    console.log(this._todoListModel.taskList)
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
-  actionToggle(): void {
-    //1 - model.update()
-    //2 - view.render();
-    //
+  actionToggle(id: number): void {
+    this._todoListModel.toggle(id);
+    console.log(this._todoListModel.taskList);
+
+    this._todoListView.render(
+      this._todoListModel.taskList,
+      this.currentFilterValue
+    );
   }
+  
 
   actionRemove(): void {
     //1 - mode;.delete();

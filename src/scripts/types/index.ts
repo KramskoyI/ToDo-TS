@@ -8,6 +8,7 @@ export interface IActions {
   onInput: (value: string) => void; // arrow function
   onSubmit: () => void;
   onChange: (id: number, text: string) => void;
+  onToggle: (id: number) => void;
 }
 
 export interface IListener {

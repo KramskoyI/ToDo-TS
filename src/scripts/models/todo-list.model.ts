@@ -25,4 +25,16 @@ export default class TodoListModel {
 
     this.taskList.push(todo);
   }
+  toggle(id: number) {
+    this.taskList = this.taskList.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          checked: !todo.checked,
+        };
+      } else {
+        return todo;
+      }
+    });
+  }
 }

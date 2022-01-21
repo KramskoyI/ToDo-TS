@@ -4,7 +4,8 @@ export default class TodoListView {
   handlers = {
     onInput: (value: string) => console.log('Input'),
     onSubmit: () => console.log('Submit'),
-    onChange: (id: number, text: string) => console.log('Change')
+    onChange: (id: number, text: string) => console.log('Change'),
+    onToggle: (id: number) => console.log("toggle", id),
   };
 
   private static _createContainer(): HTMLElement {
@@ -69,6 +70,7 @@ export default class TodoListView {
     this.handlers.onInput = actions.onInput;
     this.handlers.onSubmit = actions.onSubmit;
     this.handlers.onChange = actions.onChange;
+    this.handlers.onToggle = actions.onToggle;
   }
 
   private _createEditModal(): Promise<string | boolean> {
@@ -119,6 +121,9 @@ export default class TodoListView {
     const input = document.createElement('input');
     input.setAttribute('type', 'checkbox');
     input.checked = todo.checked;
+    input.addEventListener('click', () => {
+      this.handlers.onToggle(todo.id);
+    });
 
     const spanCheckMark = document.createElement('span');
     spanCheckMark.classList.add('checkmark');
