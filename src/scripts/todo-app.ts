@@ -8,7 +8,6 @@ class TodoApp {
     const model = new TodoListModel();
     const controller = new TodoListController(model, view);
     controller.init();
-
   }
 }
 

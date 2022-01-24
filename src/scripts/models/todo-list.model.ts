@@ -30,7 +30,7 @@ export default class TodoListModel {
       if (todo.id === id) {
         return {
           ...todo,
-          checked: !todo.checked,
+          checked: !todo.checked
         };
       } else {
         return todo;

@@ -3,13 +3,9 @@ import { Filters, ITodoItem } from '../types';
 import TodoListView from '../views/todo-list.view';
 
 export default class TodoListController {
-  private currentFilterValue: Filters =
-    <Filters>localStorage.getItem("filterState") || Filters.ALL;
+  private currentFilterValue: Filters = <Filters>localStorage.getItem('filterState') || Filters.ALL;
 
-  constructor(
-    private readonly _todoListModel: TodoListModel,
-    private readonly _todoListView: TodoListView
-  ) {
+  constructor(private readonly _todoListModel: TodoListModel, private readonly _todoListView: TodoListView) {
     _todoListView.init({
       onInput: this.actionInput.bind(this),
       onSubmit: this.actionAdd.bind(this),
@@ -17,7 +13,7 @@ export default class TodoListController {
       onToggle: this.actionToggle.bind(this),
       onRemove: this.actionRemove.bind(this),
       onDeleteAllCompleted: this.actionRemoveAllComplete.bind(this),
-      onClickFilter: this.actionChangeFilter.bind(this),
+      onClickFilter: this.actionChangeFilter.bind(this)
     });
   }
 
@@ -40,7 +36,7 @@ export default class TodoListController {
   actionChange(id: number, text: string): void {
     this._todoListModel.taskList = this._todoListModel.taskList.map((todo) => {
       if (todo.id === id) {
-        return  {
+        return {
           ...todo,
           text
         };
@@ -48,7 +44,7 @@ export default class TodoListController {
         return todo;
       }
     });
-    console.log(this._todoListModel.taskList)
+    console.log(this._todoListModel.taskList);
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
@@ -56,37 +52,23 @@ export default class TodoListController {
     this._todoListModel.toggle(id);
     console.log(this._todoListModel.taskList);
 
-    this._todoListView.render(
-      this._todoListModel.taskList,
-      this.currentFilterValue
-    );
+    this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
-  
 
   actionRemove(id: number): void {
     this._todoListModel.delete(id);
 
-    this._todoListView.render(
-      this._todoListModel.taskList,
-      this.currentFilterValue
-    );
+    this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
   actionRemoveAllComplete(): void {
     this._todoListModel.removeUnCompleted();
-    this._todoListView.render(
-      this._todoListModel.taskList,
-      this.currentFilterValue
-    );
+    this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
   actionChangeFilter(value: Filters) {
     this.currentFilterValue = value;
-    localStorage.setItem("filterState", value);
-    
-    this._todoListView.render(
-      this._todoListModel.taskList,
-      this.currentFilterValue
-    );
+    localStorage.setItem('filterState', value);
+    this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 }
