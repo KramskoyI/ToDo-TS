@@ -9,6 +9,9 @@ export interface IActions {
   onSubmit: () => void;
   onChange: (id: number, text: string) => void;
   onToggle: (id: number) => void;
+  onRemove: (id: number) => void;
+  onDeleteAllCompleted: () => void;
+  onClickFilter: (value: Filters) => void;
 }
 
 export interface IListener {

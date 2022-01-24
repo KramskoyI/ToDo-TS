@@ -37,4 +37,12 @@ export default class TodoListModel {
       }
     });
   }
+
+  delete(id: number) {
+    this.taskList = this.taskList.filter((todo) => todo.id !== id);
+  }
+
+  removeUnCompleted() {
+    this.taskList = this.taskList.filter((todo) => !todo.checked);
+  }
 }

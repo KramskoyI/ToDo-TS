@@ -6,6 +6,9 @@ export default class TodoListView {
     onSubmit: () => console.log('Submit'),
     onChange: (id: number, text: string) => console.log('Change'),
     onToggle: (id: number) => console.log("toggle", id),
+    onRemove: (id: number) => console.log("remove", id),
+    onDeleteAllCompleted: () => console.log("remove all"),
+    onClickFilter: (value: Filters) => console.log("filter func", value),
   };
 
   private static _createContainer(): HTMLElement {
@@ -56,11 +59,19 @@ export default class TodoListView {
   //---
   constructor(private readonly _rootElement: HTMLElement) {}
 
-  render(todos: ITodoItem[], filters = Filters.ALL): void {
+  render(todos: ITodoItem[], filter = Filters.ALL): void {
     this._clearApp();
     const header = TodoListView._createHeader();
+    let filteredArray: ITodoItem[];
+    if (filter === Filters.ALL) {
+      filteredArray = [...todos];
+    } else if (filter === Filters.ACTIVE) {
+      filteredArray = todos.filter((todo) => !todo.checked);
+    } else if (filter === Filters.COMPLETED) {
+      filteredArray = todos.filter((todo) => todo.checked);
+    }
 
-    const main = this._createMain(todos);
+    const main = this._createMain(todos, filteredArray, filter);
 
     this._rootElement.appendChild(header);
     this._rootElement.appendChild(main);
@@ -71,6 +82,9 @@ export default class TodoListView {
     this.handlers.onSubmit = actions.onSubmit;
     this.handlers.onChange = actions.onChange;
     this.handlers.onToggle = actions.onToggle;
+    this.handlers.onRemove = actions.onRemove;
+    this.handlers.onDeleteAllCompleted = actions.onDeleteAllCompleted;
+    this.handlers.onClickFilter = actions.onClickFilter;
   }
 
   private _createEditModal(): Promise<string | boolean> {
@@ -109,9 +123,49 @@ export default class TodoListView {
     });
   }
 
-  // private _deleteListElement(todo: ITodoItem): void {
-  //   console.log(1);
-  // }
+  private _createDeleteModal(
+    message: string,
+    id?: number
+  ): Promise<number | string | boolean> {
+    const modal = document.getElementById("modal");
+
+    const backdrop = document.createElement("div");
+    backdrop.classList.add("backdrop");
+
+    const textField = document.createElement("div");
+    textField.classList.add("text-field");
+
+    const h1 = document.createElement("h1");
+    h1.insertAdjacentText("afterbegin", message);
+
+    textField.appendChild(h1);
+    textField.focus();
+    backdrop.appendChild(textField);
+
+    modal.appendChild(backdrop);
+
+    return new Promise((resolve) => {
+      const clearModal = (e: KeyboardEvent) => {
+        if (e.code === KeyboardKeys.ENTER_KEY) {
+          modal.replaceChildren();
+          document.removeEventListener("keydown", clearModal);
+          if (id) {
+            resolve(id);
+          } else {
+            resolve(Infinity);
+          }
+        }
+
+        if (e.code === KeyboardKeys.ESCAPE_KEY) {
+          modal.replaceChildren();
+          document.removeEventListener("keydown", clearModal);
+          resolve(false);
+        }
+      };
+
+      document.addEventListener("keydown", clearModal);
+    });
+  }
 
   private _createListElment(todo: ITodoItem): HTMLLIElement {
     const li = document.createElement('li');
@@ -158,15 +212,19 @@ export default class TodoListView {
     );
 
     const btnDelete = TodoListView._createButton(
-      '✗',
-      ['delete'],
+      "✗",
+      ["delete"],
       [
         {
-          eventName: 'click',
+          eventName: "click",
           callback: () => {
-            console.log(this);
-          }
-        }
+            this._createDeleteModal("Delete Todo?", todo.id).then((todoId) => {
+              if (todoId) {
+                this.handlers.onRemove(<number>todoId);
+              }
+            });
+          },
+        },
       ]
     );
 
@@ -188,7 +246,6 @@ export default class TodoListView {
 
     const input = document.createElement('input');
     input.addEventListener('input', (e) => {
-      // console.log((<HTMLInputElement>e.target).value)
       this.handlers.onInput((<HTMLInputElement>e.target).value);
     });
     input.addEventListener('keydown', (e) => {
@@ -200,7 +257,6 @@ export default class TodoListView {
     input.setAttribute('placeholder', 'new todo...');
     input.setAttribute('autocomplete', 'off');
 
-    // const button = document.createElement('button');
     const btnAdd = TodoListView._createButton(
       'Add',
       ['add-btn'],
@@ -234,21 +290,114 @@ export default class TodoListView {
     return section;
   }
 
-  private _createMain(todos: ITodoItem[]): HTMLElement {
-    const main = document.createElement('main');
-    main.classList.add('main');
+  private _createControlsSection(todos: ITodoItem[], filterState: Filters) {
+    const section = TodoListView._createSection("controls");
+
+    const span = document.createElement("span");
+    span.classList.add("counter");
+    const unCompletedArray: ITodoItem[] = todos.filter(
+      (todo) => !todo.checked
+    );
+    const completedArray: ITodoItem[] = todos.filter((todo) => todo.checked);
+    span.insertAdjacentText(
+      "afterbegin",
+      String(unCompletedArray.length) + " items left"
+    );
+
+    const div = document.createElement("div");
+    div.classList.add("filters");
+
+    const allBtn = TodoListView._createButton(
+      "All",
+      [filterState === Filters.ALL ? "active" : "def"],
+      [
+        {
+          eventName: "click",
+          callback: () => {
+            this.handlers.onClickFilter(Filters.ALL);
+          },
+        },
+      ]
+    );
+
+    const activeBtn = TodoListView._createButton(
+      "Active",
+      [filterState === Filters.ACTIVE ? "active" : "def"],
+      [
+        {
+          eventName: "click",
+          callback: () => {
+            this.handlers.onClickFilter(Filters.ACTIVE);
+          },
+        },
+      ]
+    );
+    const completedBtn = TodoListView._createButton(
+      "Completed",
+      [filterState === Filters.COMPLETED ? "active" : "def"],
+      [
+        {
+          eventName: "click",
+          callback: () => {
+            this.handlers.onClickFilter(Filters.COMPLETED);
+          },
+        },
+      ]
+    );
+
+    div.appendChild(allBtn);
+    div.appendChild(activeBtn);
+    div.appendChild(completedBtn);
+
+    const clearCompleteBtn = TodoListView._createButton(
+      "Clear completed",
+      ["clear-btn"],
+      [
+        {
+          eventName: "click",
+          callback: () => {
+            this._createDeleteModal("Delete all completed?").then((data) => {
+              if (data === Infinity) {
+                this.handlers.onDeleteAllCompleted();
+              } else {
+                console.log("other");
+              }
+            });
+          },
+        },
+      ]
+    );
+
+    if (!completedArray.length) {
+      clearCompleteBtn.classList.add("invisible");
+    }
+
+    section.appendChild(span);
+    section.appendChild(div);
+    section.appendChild(clearCompleteBtn);
+
+    return section;
+  }
+
+  private _createMain(
+    todos: ITodoItem[],
+    filteredTodos: ITodoItem[],
+    filter: Filters
+  ): HTMLElement {
+    const main = document.createElement("main");
+    main.classList.add("main");
 
     const container = TodoListView._createContainer();
 
     const inputSection = this._createInputSection();
-    const todoListSection = this._createTodoListSection(todos);
-    const secControls = TodoListView._createSection('controls');
+    const todoListSection = this._createTodoListSection(filteredTodos);
+    const controlsSection = this._createControlsSection(todos, filter);
 
     container.appendChild(inputSection);
     container.appendChild(todoListSection);
-
-    //third section with btns
-    // container.appendChild(secControls);
+    if (todos.length) {
+      container.appendChild(controlsSection);
+    }
 
     main.appendChild(container);
     return main;
