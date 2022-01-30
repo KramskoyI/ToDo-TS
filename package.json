@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx webpack",
     "start": "npx webpack serve --mode development --open",
-    "eslint": "eslint --fix . --ext .js,.ts"
+    "eslint": "eslint --fix . --ext .js,.ts",
+    "db": "node ./src/DBserver/DB/db.js",
+    "table": "node ./src/DBserver/DB/table.js"
   },
   "keywords": [],
   "author": "",
@@ -29,5 +31,10 @@
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.7.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "pg": "^8.7.1"
   }
 }
