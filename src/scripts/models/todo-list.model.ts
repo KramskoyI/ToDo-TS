@@ -15,6 +15,11 @@ export default class TodoListModel {
       checked: true
     }
   ];
+
+  // async getAllTodos() {
+  //   const test = await fetch(Uri.LINK);
+  //   console.log(test);
+  // }
   
   create(text: string) {
     const todo: ITodoItem = {

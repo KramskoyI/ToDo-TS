@@ -18,10 +18,12 @@ export default class TodoListController {
   }
 
   init(): void {
+    // this._todoListModel.getAllTodos();
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
   actionInput(value: string): void {
+
     this._todoListModel.currentInputValue = value;
   }
 
