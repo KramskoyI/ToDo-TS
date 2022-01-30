@@ -30,6 +30,7 @@ export default class TodoListController {
     if (text) {
       this._todoListModel.create(text);
       this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
+      
     }
   }
 

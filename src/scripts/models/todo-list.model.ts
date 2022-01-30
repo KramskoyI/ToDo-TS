@@ -1,4 +1,4 @@
-import { ITodoItem } from '../types';
+import { ITodoItem, Uri } from '../types';
 
 export default class TodoListModel {
   currentInputValue = '';
@@ -15,16 +15,17 @@ export default class TodoListModel {
       checked: true
     }
   ];
-
+  
   create(text: string) {
     const todo: ITodoItem = {
       id: Math.floor(Math.random() * 100000),
       text,
       checked: false
     };
-
     this.taskList.push(todo);
+    
   }
+
   toggle(id: number) {
     this.taskList = this.taskList.map((todo) => {
       if (todo.id === id) {

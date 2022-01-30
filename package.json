@@ -9,7 +9,8 @@
     "start": "npx webpack serve --mode development --open",
     "eslint": "eslint --fix . --ext .js,.ts",
     "db": "node ./src/DBserver/DB/db.js",
-    "table": "node ./src/DBserver/DB/table.js"
+    "table": "node ./src/DBserver/DB/table.js",
+    "server": "node ./src/DBserver/app-server.js"
   },
   "keywords": [],
   "author": "",
