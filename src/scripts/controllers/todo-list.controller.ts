@@ -30,7 +30,10 @@ export default class TodoListController {
     const text = this._todoListModel.currentInputValue.trim();
     if (text) {
       this._todoListModel.create(text);
+      this._todoListModel.getAllTodos();
       this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
+    } else {
+      console.log('neudacha');
     }
   }
 

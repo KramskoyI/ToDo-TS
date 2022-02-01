@@ -14,7 +14,7 @@ const table = `
     CREATE TABLE  "todo" (
         "id" SERIAL,
         "text" VARCHAR(120) NOT NULL,
-        "completed" BOOLEAN NOT NULL,
+        "checked" BOOLEAN NOT NULL,
         PRIMARY KEY ("id")
     );
 `

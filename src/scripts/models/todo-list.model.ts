@@ -3,42 +3,38 @@ import { ITodoItem, Uri } from '../types';
 export default class TodoListModel {
   currentInputValue = '';
 
-  taskList: ITodoItem[] = [
-    // {
-    //   id: 1321321,
-    //   text: 'fsdfasf',
-    //   checked: false
-    // },
-    // {
-    //   id: 1321321,
-    //   text: 'true',
-    //   checked: true
-    // }
-  ];
+  taskList: ITodoItem[] = JSON.parse(localStorage.getItem('currentTaskList')) || [];
 
   async getAllTodos() {
     const response = await fetch(Uri.LINK);
-    console.log(Uri.LINK);
     const data = await response.json();
     this.taskList = [...data];
     console.log('todos==>', this.taskList);
+    return localStorage.setItem('currentTaskList', JSON.stringify(this.taskList));
   }
 
-  create(text: string) {
-    const todo: ITodoItem = {
-      id: Math.floor(Math.random() * 100000),
-      text,
-      checked: false
-    };
-    this.taskList.push(todo);
-    // const response = await fetch(Uri.LINK, {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ [key]: value }),
-    // });
+  async create(text: string) {
+    // const todo = {
+    // id: Math.floor(Math.random() * 100000),
+    //   checked: false,
+    //   text: text
+    // };
+    // this.taskList.push(todo);
+    const response = await fetch(Uri.LINK, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ text: text })
+    });
+    console.log(response.status);
+    const data = await response.json();
+    console.log(data);
+    // this.taskList = [...data];
+    // console.log('todos==>', this.taskList);
+    // return localStorage.setItem('currentTaskList', JSON.stringify(this.taskList));
   }
 
   toggle(id: number) {

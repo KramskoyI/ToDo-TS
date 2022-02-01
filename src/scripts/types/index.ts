@@ -31,5 +31,5 @@ export enum Filters {
 }
 
 export enum Uri {
-  LINK = `"http://localhost:3000/api/v1/"`
+  LINK = 'http://localhost:3000/api/v1/'
 }
