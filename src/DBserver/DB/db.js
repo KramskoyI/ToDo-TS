@@ -1,28 +1,25 @@
 const { Client } = require('pg');
-const { DB_HOST, DB_USER, DB_PASSWORD, DB_PORT } = require('./consts');
-
+const { HOST, USER, PASSWORD, PORT } = require('./consts');
 
 const client = new Client({
-    host: DB_HOST,
-    user: DB_USER,
-    password: DB_PASSWORD,
-    port: DB_PORT
+  host: HOST,
+  user: USER,
+  password: PASSWORD,
+  port: PORT
 });
 
-
 const createDB = async () => {
-    try {
-        await client.connect();
-        await client.query('CREATE DATABASE todos');
-    } catch (error) {
-        console.log(error);
-        return false
-    } finally {
-        await client.end();
-    }
-}
-
+  try {
+    await client.connect();
+    await client.query('CREATE DATABASE todos');
+  } catch (error) {
+    console.log(error);
+    return false;
+  } finally {
+    await client.end();
+  }
+};
 
 createDB().then((result) => {
-    console.log('DB has been created');
-})
+  console.log('DB has been created');
+});

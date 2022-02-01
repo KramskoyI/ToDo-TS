@@ -4,23 +4,26 @@ export default class TodoListModel {
   currentInputValue = '';
 
   taskList: ITodoItem[] = [
-    {
-      id: 1321321,
-      text: 'fsdfasf',
-      checked: false
-    },
-    {
-      id: 1321321,
-      text: 'true',
-      checked: true
-    }
+    // {
+    //   id: 1321321,
+    //   text: 'fsdfasf',
+    //   checked: false
+    // },
+    // {
+    //   id: 1321321,
+    //   text: 'true',
+    //   checked: true
+    // }
   ];
 
-  // async getAllTodos() {
-  //   const test = await fetch(Uri.LINK);
-  //   console.log(test);
-  // }
-  
+  async getAllTodos() {
+    const response = await fetch(Uri.LINK);
+    console.log(Uri.LINK);
+    const data = await response.json();
+    this.taskList = [...data];
+    console.log('todos==>', this.taskList);
+  }
+
   create(text: string) {
     const todo: ITodoItem = {
       id: Math.floor(Math.random() * 100000),
@@ -28,7 +31,14 @@ export default class TodoListModel {
       checked: false
     };
     this.taskList.push(todo);
-    
+    // const response = await fetch(Uri.LINK, {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ [key]: value }),
+    // });
   }
 
   toggle(id: number) {

@@ -31,7 +31,6 @@ const createDB = async (query) => {
     }
 }
 
-
 createDB(table).then((result) => {
     console.log('Table');
 })

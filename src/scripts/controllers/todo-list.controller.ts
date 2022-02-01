@@ -18,12 +18,11 @@ export default class TodoListController {
   }
 
   init(): void {
-    // this._todoListModel.getAllTodos();
+    this._todoListModel.getAllTodos();
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
   actionInput(value: string): void {
-
     this._todoListModel.currentInputValue = value;
   }
 
@@ -32,7 +31,6 @@ export default class TodoListController {
     if (text) {
       this._todoListModel.create(text);
       this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
-      
     }
   }
 
