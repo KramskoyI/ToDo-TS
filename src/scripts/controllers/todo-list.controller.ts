@@ -17,47 +17,46 @@ export default class TodoListController {
     });
   }
 
-  init(): void {
-    this._todoListModel.getAllTodos();
+  async init(): Promise<void> {
+    await this._todoListModel.getAllTodos();
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
-  actionInput(value: string): void {
-    this._todoListModel.currentInputValue = value;
+  async actionInput(value: string): Promise<void> {
+    this._todoListModel.currentInputValue = await value;
   }
 
-  actionAdd(): void {
+  async actionAdd(): Promise<void> {
     const text = this._todoListModel.currentInputValue.trim();
     if (text) {
-      this._todoListModel.create(text);
-      this._todoListModel.getAllTodos();
+      await this._todoListModel.create(text);
+      await this._todoListModel.getAllTodos();
       this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
     } else {
       console.log('neudacha');
     }
   }
 
-  actionChange(id: number, text: string): void {
-    this._todoListModel.change(id, text);
-    console.log(this._todoListModel.taskList);
+  async actionChange(id: number, text: string): Promise<void> {
+    await this._todoListModel.change(id, text);
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
-  actionToggle(id: number): void {
-    this._todoListModel.toggle(id);
-    this._todoListModel.getAllTodos();
+  async actionToggle(id: number): Promise<void> {
+    await this._todoListModel.toggle(id);
+    await this._todoListModel.getAllTodos();
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
-  actionRemove(id: number): void {
-    this._todoListModel.delete(id);
-    this._todoListModel.getAllTodos();
+  async actionRemove(id: number): Promise<void> {
+    await this._todoListModel.delete(id);
+    await this._todoListModel.getAllTodos();
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
-  actionRemoveAllComplete(): void {
-    this._todoListModel.removeUnCompleted();
-    this._todoListModel.getAllTodos();
+  async actionRemoveAllComplete(): Promise<void> {
+    await this._todoListModel.removeUnCompleted();
+    await this._todoListModel.getAllTodos();
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 

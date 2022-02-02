@@ -9,9 +9,14 @@ export default class TodoListModel {
     const response = await fetch(Uri.LINK);
     const data = await response.json();
     this.taskList = [...data];
-    console.log('todos==>', this.taskList);
+    console.log('data get', data, 'taskList', this.taskList);
     return localStorage.setItem('currentTaskList', JSON.stringify(this.taskList));
   }
+
+  // getAllTodos() {
+  //   fetch(Uri.LINK)
+  //     .then((respons => respons.json))
+  // }
 
   async create(text: string) {
     await fetch(Uri.LINK, {

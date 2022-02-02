@@ -75,6 +75,7 @@ export default class TodoListView {
 
     this._rootElement.appendChild(header);
     this._rootElement.appendChild(main);
+    console.log('render');
   }
 
   init(actions: IActions): void {
