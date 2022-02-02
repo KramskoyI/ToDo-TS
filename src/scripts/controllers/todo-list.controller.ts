@@ -27,7 +27,7 @@ export default class TodoListController {
   }
 
   async actionAdd(): Promise<void> {
-    const text = this._todoListModel.currentInputValue.trim();
+    const text = await this._todoListModel.currentInputValue.trim();
     if (text) {
       await this._todoListModel.create(text);
       await this._todoListModel.getAllTodos();
