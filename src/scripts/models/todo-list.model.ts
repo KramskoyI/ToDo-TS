@@ -14,13 +14,7 @@ export default class TodoListModel {
   }
 
   async create(text: string) {
-    // const todo = {
-    // id: Math.floor(Math.random() * 100000),
-    //   checked: false,
-    //   text: text
-    // };
-    // this.taskList.push(todo);
-    const response = await fetch(Uri.LINK, {
+    await fetch(Uri.LINK, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -29,32 +23,44 @@ export default class TodoListModel {
       },
       body: JSON.stringify({ text: text })
     });
-    console.log(response.status);
-    const data = await response.json();
-    console.log(data);
-    // this.taskList = [...data];
-    // console.log('todos==>', this.taskList);
-    // return localStorage.setItem('currentTaskList', JSON.stringify(this.taskList));
   }
 
-  toggle(id: number) {
-    this.taskList = this.taskList.map((todo) => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          checked: !todo.checked
-        };
-      } else {
-        return todo;
-      }
+  async toggle(id: number) {
+    const todo = this.taskList.find((todo) => todo.id === id);
+    await fetch(Uri.LINK + `${id.toString()}`, {
+      method: 'PUT',
+      mode: 'cors',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ checked: !todo.checked })
     });
   }
 
-  delete(id: number) {
-    this.taskList = this.taskList.filter((todo) => todo.id !== id);
+  async change(id: number, text: string) {
+    await fetch(Uri.LINK + `${id.toString()}`, {
+      method: 'PUT',
+      mode: 'cors',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ text: text })
+    });
   }
 
-  removeUnCompleted() {
-    this.taskList = this.taskList.filter((todo) => !todo.checked);
+  async delete(id: number) {
+    await fetch(Uri.LINK + `${id.toString()}`, {
+      method: 'DELETE',
+      mode: 'cors'
+    });
+  }
+
+  async removeUnCompleted() {
+    await fetch(Uri.LINK + '0', {
+      method: 'DELETE',
+      mode: 'cors'
+    });
   }
 }

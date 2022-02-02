@@ -38,35 +38,26 @@ export default class TodoListController {
   }
 
   actionChange(id: number, text: string): void {
-    this._todoListModel.taskList = this._todoListModel.taskList.map((todo) => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          text
-        };
-      } else {
-        return todo;
-      }
-    });
+    this._todoListModel.change(id, text);
     console.log(this._todoListModel.taskList);
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
   actionToggle(id: number): void {
     this._todoListModel.toggle(id);
-    console.log(this._todoListModel.taskList);
-
+    this._todoListModel.getAllTodos();
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
   actionRemove(id: number): void {
     this._todoListModel.delete(id);
-
+    this._todoListModel.getAllTodos();
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
   actionRemoveAllComplete(): void {
     this._todoListModel.removeUnCompleted();
+    this._todoListModel.getAllTodos();
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
