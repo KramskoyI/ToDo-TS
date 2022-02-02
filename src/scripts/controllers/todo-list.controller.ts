@@ -22,8 +22,8 @@ export default class TodoListController {
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
-  async actionInput(value: string): Promise<void> {
-    this._todoListModel.currentInputValue = await value;
+  actionInput(value: string): void {
+    this._todoListModel.currentInputValue = value;
   }
 
   async actionAdd(): Promise<void> {
@@ -39,6 +39,7 @@ export default class TodoListController {
 
   async actionChange(id: number, text: string): Promise<void> {
     await this._todoListModel.change(id, text);
+    await this._todoListModel.getAllTodos();
     this._todoListView.render(this._todoListModel.taskList, this.currentFilterValue);
   }
 
