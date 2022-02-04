@@ -124,7 +124,7 @@ export default class TodoListView {
     });
   }
 
-  private _createDeleteModal(message: string, id?: number): Promise<number | string | boolean> {
+  private async _createDeleteModal(message: string, id?: number): Promise<number | string | boolean> {
     const modal = document.getElementById('modal');
 
     const backdrop = document.createElement('div');
@@ -191,7 +191,6 @@ export default class TodoListView {
     const div = document.createElement('div');
     div.classList.add('buttons');
 
-    // const editBtn = document.createElement('button');
     const btnEdit = TodoListView._createButton(
       '∴',
       ['edit'],
