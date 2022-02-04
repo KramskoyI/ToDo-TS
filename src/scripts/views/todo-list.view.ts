@@ -215,11 +215,12 @@ export default class TodoListView {
         {
           eventName: 'click',
           callback: () => {
-            this._createDeleteModal('Delete Todo?', todo.id).then((todoId) => {
-              if (todoId) {
-                this.handlers.onRemove(<number>todoId);
-              }
-            });
+            // this._createDeleteModal('Delete Todo?', todo.id).then((todoId) => {
+            //   if (todoId) {
+            //     this.handlers.onRemove(<number>todoId);
+            //   }
+            // });
+            this.handlers.onRemove(todo.id);
           }
         }
       ]
@@ -348,13 +349,13 @@ export default class TodoListView {
         {
           eventName: 'click',
           callback: () => {
-            this._createDeleteModal('Delete all completed?').then((data) => {
-              if (data === Infinity) {
-                this.handlers.onDeleteAllCompleted();
-              } else {
-                console.log('other');
-              }
-            });
+            // this._createDeleteModal('Delete all completed?').then((data) => {
+            //   if (data === Infinity) {
+            this.handlers.onDeleteAllCompleted();
+            //   } else {
+            //     console.log('other');
+            //   }
+            // });
           }
         }
       ]
