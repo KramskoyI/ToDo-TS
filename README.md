@@ -14,7 +14,7 @@ For start:
 - npm i
 - npm run db
 - npm run table
-- npm run srart
+- npm run start
 - npm run server
 
 
